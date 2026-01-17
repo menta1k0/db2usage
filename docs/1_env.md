@@ -43,7 +43,7 @@
     sudo groupadd -g 988 db2fadm1
     sudo groupadd -g 987 dasadm1
    
-   
+    sudo useradd -u 1004 -g db2iadm1 -m -d /home/db2inst1 db2inst1
     sudo useradd -u 1003 -g db2fadm1 -m -d /home/db2fenc1 db2fenc1
     sudo useradd -u 1002 -g dasadm1 -m -d /home/dasusr1 dasusr1
    
@@ -79,7 +79,7 @@
     ```sh
     cat /etc/services
     ```
-    例：以下のように表示された場合は25010が通信ポート。
+    例：以下のように表示された場合はdb2c_db2inst1の25010が通信ポート。
     >DB2_db2inst1    20016/tcp  
     >DB2_db2inst1_1  20017/tcp  
     >DB2_db2inst1_2  20018/tcp  

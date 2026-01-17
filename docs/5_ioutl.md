@@ -79,7 +79,7 @@ IMPORT FROM [入力ファイルパス] OF DEL MODIFIED BY codepage=943 chardel0x
 ### 前提
 
 * codepage、chardel、coldel、delprioritycharはIMPORTと同様に指定が可能。
-* COMMITCOUNTは指定出来ない（トランザクションログを出力せず、コミットの概念が無い）。
+* COMMITCOUNTは指定出来ない（通常のトランザクションログをバイパスし、ページレベルでの一括処理のため）。
 * "バックアップ・ペンディング"状態が発生する（NONRECOVERABLEを指定しない場合）。
 * NONRECOVERABLEを指定してデータ損失が発生した場合に復旧不可能になる（テーブルの再作成およびCSVデータ等を用いた復旧しか出来ない）。
 * 本番環境に対してLOADを利用するべきではない（IMPORTもしくはINGESTを利用するべき）。
