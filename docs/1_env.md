@@ -1,6 +1,6 @@
 # 1.環境構築
 
-前提：Db2 v12.1のCommunityEdition
+前提：Db2 v12.1のCommunity Edition
 
 ## 1-1. Db2のインストール
 
@@ -94,7 +94,7 @@
 ## 1-4. データベースの作成
 
 > [!NOTE]
->データベースを起動してから実行する。
+>インスタンスを起動(db2start)してから実行する。
 
 1. Oracle互換モードを使用する場合（使用しない場合はSKIP）
     ```sh
@@ -102,6 +102,8 @@
     db2set DB2_COMPATIBILITY_VECTOR=ORA
     exit
     ```
+    > [!NOTE]
+    >DB2_COMPATIBILITY_VECTORの設定変更を反映するためにインスタンスの再起動が必要（db2stop & db2start）。
 
 2. データベースを作成する
     ```sh
@@ -113,7 +115,7 @@
 ## 1-5. スキーマの作成
 
 > [!NOTE]
->データベースを起動してから実行する。
+>インスタンスを起動(db2start)してから実行する。
 
 1. スキーマを作成する
     ```sh
@@ -149,11 +151,19 @@
     ```sh
     db2greg -getinstrec instancename=db2inst1 | grep -i StartAtBoot
     ```
+    > [!NOTE]
+    > 以下のようになっていればOK。
+    > ```bash
     >   StartAtBoot  = 1
+    > ```
 
     2-4. 設定結果の確認②（ユーザーdb2inst1で続けて実行）：
     ```sh
     db2 get dbm cfg | grep SVCENAME
     ```
+    > [!NOTE]
+    > 以下のようになっていればOK。
+    > ```bash
     > TCP/IP Service name                          (SVCENAME) = db2c_db2inst1  
     > SSL service name                         (SSL_SVCENAME) =
+    > ```

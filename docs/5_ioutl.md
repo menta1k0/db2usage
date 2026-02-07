@@ -40,21 +40,21 @@ EXPORT TO [出力ファイルパス] OF DEL MODIFIED BY coldel0x09 codepage=943 
 ## 5-3. IMPORT
 
 ### 基本形
-    ```sql
-    IMPORT FROM [入力ファイルパス] OF DEL COMMITCOUNT=[コミット間隔] INSERT_INTO [テーブル名]
-    ```
-    > [!NOTE]
-    > IMPORTの動作モードは下表のとおり（LOADでも同様のモード指定が可能）。
-  
-    > |モード|動作|
-    > |---|---|
-    > |INSERT INTO|主キー重複が無ければINSERTする|
-    > |INSERT_UPDATE|主キー重複が無ければINSERTし、主キー重複が有ればUPDATEする|
-    > |REPLACE|全レコードをDELETEしてからINSERTする|
+
+```sql
+IMPORT FROM [入力ファイルパス] OF DEL COMMITCOUNT=[コミット間隔] INSERT INTO [テーブル名]
+```
+> [!NOTE]
+> IMPORTの動作モードは下表のとおり（LOADでも同様のモード指定が可能）。
+> |モード|動作|
+> |---|---|
+> |INSERT INTO|主キー重複が無ければINSERTする|
+> |INSERT_UPDATE|主キー重複が無ければINSERTし、主キー重複が有ればUPDATEする|
+> |REPLACE|全レコードをDELETEしてからINSERTする|
 
 ### 応用形
 ```sql
-IMPORT FROM [入力ファイルパス] OF DEL MODIFIED BY codepage=943 chardel0x1f coldel0x09 delprioritychar COMMITCOUNT=[コミット間隔] INSERT_INTO [テーブル名]
+IMPORT FROM [入力ファイルパス] OF DEL MODIFIED BY codepage=943 chardel0x1f coldel0x09 delprioritychar COMMITCOUNT=[コミット間隔] INSERT INTO [テーブル名]
 ```
 > [!NOTE]
 >"codepage=943" ＝ Windows-31J(MS932)
@@ -100,7 +100,7 @@ list utilities show detail
 #### ロードペンディング状態を確認＆前進
 
 1. [9-5-1.テーブルの状態確認](9_tips.md#9-5-1テーブルの状態確認) を実施する。
-2. LOAD_STATUS が 「IN_PROGRESS」の場合はLOAD素処理が進行中、「PENDING」になっていたらペンディングになってしまっている。
+2. LOAD_STATUS が 「IN_PROGRESS」の場合はLOAD処理が進行中、「PENDING」になっていたらペンディングになってしまっている。
 3. NO_LOAD_RESTART が「Y」になってしまっていたらLOAD再始動不可になってしまっている。  
 「N」の場合はLOAD RESTARTが可能。  
 ※「NONRECOVERABLE」を指定してLOADを起動した場合はLOAD RESTARTは不可能なので、TERMINATEさせて原因解決後にイチからLOADしなおす必要がある。

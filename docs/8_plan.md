@@ -13,6 +13,9 @@ db2 -tvf /home/db2inst1/sqllib/misc/EXPLAIN.DDL
     ```sh
     db2 "set current explain mode explain"
     ```
+    > [!NOTE]
+    > 上記の設定の後にSQLを実行しても実際にデータアクセスは行われない。  
+    > `explain mode yes`にすると実際にデータアクセスも行われるようになる（こちらを利用する場面はほぼ無い）。
 2. 実行計画を取得したいSQLを実行
     ```sh
     db2 -tvf [SQLファイル]

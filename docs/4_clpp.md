@@ -45,7 +45,7 @@ SQL> EXIT;
 
 1. SQLを直接指定
     ```bash
-    SQL> "SELECT * FROM [テーブル名] WHERE [抽出条件]";
+    SQL> SELECT * FROM [テーブル名] WHERE [抽出条件];
     ```
 
 2. SQLファイルを指定
@@ -61,6 +61,11 @@ SQL> EXIT;
     >このやり方の場合はSQLファイルの内容を実行した後に対話モードが継続する。DISCONNECTとEXITの手打ちが必要になる。
 
 ## 4-2.PL/SQLの実行
+
+PL/SQLを実行するためにはOracle互換モードが有効になっている必要がある。
+> [!NOTE]
+> Oracle互換モードの設定方法については下記ページを参照。  
+> [1.環境構築](1_env.md#1-4-データベースの作成) の「1. Oracle互換モードを使用する場合（使用しない場合はSKIP）」
 
 1. サンプルPL/SQL(hello_world.sql)
     ```sql:hello_world.sql
