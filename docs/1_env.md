@@ -146,7 +146,9 @@
     db2iauto -on db2inst1
     db2set DB2AUTOSTART
     ```
-    
+    > [!NOTE]
+    >手順2-2の結果を2-3で確認する。`db2set DB2AUTOSTART`を実行した時点では特に応答メッセージは表示されない。
+
     2-3. 設定結果の確認①（ユーザーdb2inst1で続けて実行）：
     ```sh
     db2greg -getinstrec instancename=db2inst1 | grep -i StartAtBoot

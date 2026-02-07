@@ -35,5 +35,5 @@ SELECT TABSCHEMA, TABNAME, CARD, STATS_TIME FROM SYSCAT.TABLES WHERE [抽出条�
 > |:--|:--|
 > |TABSCHEMA|スキーマ名|
 > |TABNAME|テーブル名|
-> |CARD|表内の行の総数。統計が収集されていない場合は -1。サンプル率を指定してRANSTATSした場合は推定行数。|
+> |CARD|表内の行の総数。統計が収集されていない場合は -1。サンプル率を指定してRUNSTATSした場合は推定行数。|
 > |STATS_TIME|統計情報更新日時|

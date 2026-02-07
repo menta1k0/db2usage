@@ -6,6 +6,9 @@ EXPLAIN表を作成しておく必要がある。
 ```sh
 db2 -tvf /home/db2inst1/sqllib/misc/EXPLAIN.DDL
 ```
+> [!NOTE]
+> 上記のDDLファイルのパスはインスタンスオーナーがdb2inst1の場合の例。  
+> インスタンスオーナーの`$HOME/sqllib/misc/EXPLAIN.DDL`となる。
 
 ## 実行計画をファイルに出力する
 

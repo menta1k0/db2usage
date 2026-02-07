@@ -11,7 +11,7 @@
 
 * 詳細なテーブル定義の確認
     ```sql
-    SELECT * FROM SYSCAT.TABLES WHERE TABSCHEMA = [スキーマ名] AND TABNAME = [テーブル名]
+    SELECT * FROM SYSCAT.COLUMNS WHERE TABSCHEMA = [スキーマ名] AND TABNAME = [テーブル名]
     ```
 
 ### 9-1-2.統計情報(統計情報更新日時・レコード件数)

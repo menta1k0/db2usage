@@ -48,7 +48,7 @@ IMPORT FROM [入力ファイルパス] OF DEL COMMITCOUNT=[コミット間隔] I
 > IMPORTの動作モードは下表のとおり（LOADでも同様のモード指定が可能）。
 > |モード|動作|
 > |---|---|
-> |INSERT INTO|主キー重複が無ければINSERTする|
+> |INSERT|主キー重複が無ければINSERTする|
 > |INSERT_UPDATE|主キー重複が無ければINSERTし、主キー重複が有ればUPDATEする|
 > |REPLACE|全レコードをDELETEしてからINSERTする|
 
