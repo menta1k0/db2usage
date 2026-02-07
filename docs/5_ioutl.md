@@ -90,6 +90,45 @@ IMPORT FROM [入力ファイルパス] OF DEL MODIFIED BY codepage=943 chardel0x
 LOAD FROM [入力ファイルパス] OF DEL INSERT INTO [テーブル名] NONRECOVERABLE
 ```
 
+### LOAD実行状況を確認する
+```sql
+list utilities show detail
+```
+
+### LOADでエラーが発生した場合のトラブルシュート
+
+#### ロードペンディング状態を確認＆前進
+
+1. [9-5-1.テーブルの状態確認](9_tips.md#9-5-1テーブルの状態確認) を実施する。
+2. LOAD_STATUS が 「IN_PROGRESS」の場合はLOAD素処理が進行中、「PENDING」になっていたらペンディングになってしまっている。
+3. NO_LOAD_RESTART が「Y」になってしまっていたらLOAD再始動不可になってしまっている。  
+「N」の場合はLOAD RESTARTが可能。  
+※「NONRECOVERABLE」を指定してLOADを起動した場合はLOAD RESTARTは不可能なので、TERMINATEさせて原因解決後にイチからLOADしなおす必要がある。
+4. エラーを発生させてしまったLOAD文の「INSERT」「INSERT_UPDATE」「REPLACE」の部分を「TERMINATE」に書き換えて再実行する。  
+これによってペンディング状態になってしまっているLOAD処理を終了させ、テーブルに対する操作を可能にする。
+5. LOADがエラーになった原因を解消した後にLOADをリトライする。
+
+#### バックアップペンディング状態を確認＆前進
+
+1. バックアップペンディング状態になっているかどうかを確認する
+
+    ```bash
+    # 構成パラメータから確認する
+    db2 get db cfg for [データベース名] | grep backup_pending
+    ```
+    ```bash
+    # 表スペースの状態から確認する（Backup pendingとなっている表スペースがあるかを確認する）
+    db2 list tablespaces show detail
+    ```
+
+2. バックアップ実行
+    ```bash
+    # NONRECOVERABLEを指定してLOADすべきケースで指定忘れしてしまったような場合は（＝当該表を洗い替える場合等）、
+    # nullデバイスにバックアップデータを捨てることで、形式上のバックアップを実行してペンディング状態を解消させる。
+    # ！！本来はきちんとしたバックアップを取得すべき！！
+    db2 backup database [データベース名] to /dev/null
+    ```
+
 ## 5-5. INGEST
 
 IBM公式サイトを参照  
