@@ -129,3 +129,67 @@ WHERE
 GROUP BY
     TABSCHEMA, TABNAME
 ```
+
+## 9-6.クエリの調査
+
+### 9-6-1.実行中クエリの特定
+
+```sql
+-- MON_CURRENT_SQL管理ビュー を利用して現在実行中のクエリを取得する
+SELECT
+    CURRENT_TIMESTAMP           AS TIMESTAMP,   -- 現在日時
+    APPLICATION_HANDLE,                         -- db2diag.log等で詳細調査時に重要な番号
+    APPLICATION_NAME,                           -- クライアント情報等が確認できる
+    APPLICATION_ID,                             -- ステートメントを実行しているIPアドレスも確認できる
+    CURRENT CLIENT_APPLNAME,                    -- (特殊レジスタ)
+    ACTIVITY_TYPE,                              -- LOAD, READ_DML, WRITE_DML等
+    ACTIVITY_STATE,                             -- IDLE, EXECUTING等
+    ELAPSED_TIME_SEC,                           -- 経過時間(秒)
+    TOTAL_CPU_TIME,                             -- 総CPU時間
+    ROWS_READ,                                  -- 読み取り行数
+    ROWS_RETURNED,                              -- 戻り行数
+    QUERY_COST_ESTIMATE,                        -- 照会コスト見積
+    SUBSTR(STMT_TEXT,1,500)      AS STMT_TEXT   -- ステートメント
+FROM
+    SYSIBMADM.MON_CURRENT_SQL
+```
+
+### 9-6-2.実行時間が長いクエリの特定
+
+```sql
+-- MON_GET_PKG_CACHE_STMT 表関数から、実行時間合計のトップ20を取得
+SELECT
+    -- 実行回数と時間
+    NUM_EXECUTIONS,                                                             -- 実行回数
+    CAST(TOTAL_CPU_TIME / 1000 AS DEC(15,2)) AS TOTAL_CPU_MS,                   -- CPU時間合計(ミリ秒)
+    CAST(STMT_EXEC_TIME / 1000 AS DEC(15,2)) AS TOTAL_EXEC_MS,                  -- 実行時間合計(ミリ秒)
+    CAST(CASE
+        WHEN NUM_EXECUTIONS > 0 THEN (FLOAT(STMT_EXEC_TIME) / FLOAT(NUM_EXECUTIONS)) / 1000
+        ELSE 0
+    END AS DEC(15,2)) AS AVG_EXEC_MS,                                           -- 平均実行時間(ミリ秒)
+
+    -- 読み取り（論理読取に対して物理読取が小さいほど、バッファプール命中が高い“傾向”）
+    (POOL_DATA_L_READS + POOL_INDEX_L_READS) AS TOTAL_LOGICAL_READS,            -- 合計論理読み取り
+    (POOL_DATA_P_READS + POOL_INDEX_P_READS) AS TOTAL_PHYSICAL_READS,           -- 合計物理読み取り（バッファプールへの物理読込）
+
+    -- 参考：物理読取率（0に近いほどバッファプール命中が高い傾向）
+    CAST(CASE
+        WHEN (POOL_DATA_L_READS + POOL_INDEX_L_READS) > 0
+        THEN FLOAT(POOL_DATA_P_READS + POOL_INDEX_P_READS) / FLOAT(POOL_DATA_L_READS + POOL_INDEX_L_READS)
+        ELSE NULL
+    END AS DEC(9,6)) AS PHYSICAL_READ_RATIO,                                    -- 物理読取率
+
+    -- 待機時間割合
+    CAST(CASE
+        WHEN STMT_EXEC_TIME > 0 THEN (FLOAT(TOTAL_ACT_WAIT_TIME) / FLOAT(STMT_EXEC_TIME)) * 100
+        ELSE 0
+    END AS DEC(5,2)) AS WAIT_PCT,                                               -- 実行時間に占める待機時間割合(%)
+
+    -- SQL文 (先頭 200 文字)
+    SUBSTR(STMT_TEXT, 1, 200) AS STMT_TEXT                                      -- ステートメント
+FROM
+    TABLE(MON_GET_PKG_CACHE_STMT(NULL, NULL, NULL, -1))
+ORDER BY
+    STMT_EXEC_TIME DESC
+FETCH FIRST 20 ROWS ONLY
+```
