@@ -103,6 +103,13 @@
     exit
     ```
 
+> [!TIP]
+> Oracle互換モードについて  
+> DB2_COMPATIBILITY_VECTORに指定する値に応じて互換内容を機能毎にON/OFFできる。  
+> ・ORA   : データ型・構文・空文字とNULLの扱い等の全てがOracle互換になる  
+> ・77B0F : PL/SQLを利用できるようにするが、データ型・空文字とNULLの扱い等はDb2流のままになる(PL/SQLでNVARCHAR2等のOracle固有のデータ型は利用できない)
+
+
 ## 1-5. スキーマの作成
 
 インスタンスを起動(db2start)してから実行する。
