@@ -169,3 +169,17 @@
     > TCP/IP Service name                          (SVCENAME) = db2c_db2inst1  
     > SSL service name                         (SSL_SVCENAME) =
     > ```
+
+## 1-7. JDBC接続設定
+
+1. 基本形
+    ```
+    jdbc:db2://${hostName}:${portNo}/${dbName}:currentSchema=${schemaName};
+    ```
+2. 応用形（CURRENT PATH 特殊レジスターの指定）
+    ```
+    jdbc:db2://${hostName}:${portNo}/${dbName}:currentSchema=${schemaName};currentFunctionPath=${schemaName},SYSIBM,SYSFUN,SYSPROC,SYSIBMADM;
+    ```
+    > [!NOTE]
+    > CURRENT PATH 特殊レジスターについては下記ページを参照。  
+    > [9-7-1.「CURRENT_SCHEMA」を指定してもエラーになる理由](./9_tips.md#9-7-1current_schemaを指定してもエラーになる理由)  

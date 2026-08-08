@@ -193,3 +193,34 @@ ORDER BY
     STMT_EXEC_TIME DESC
 FETCH FIRST 20 ROWS ONLY
 ```
+
+## 9-7.ストアドファンクション・ストアドプロシージャ
+
+### 9-7-1.「CURRENT_SCHEMA」を指定してもエラーになる理由
+
+#### 事象
+- スキーマ名を省略してファンクションやプロシージャを作成すると、CURRENT_SCHEMAではなくユーザー自身のスキーマに作成される
+- スキーマ名を明示してファンクションやプロシージャを作成した後に、スキーマ名を省略して呼び出すと発見できずにエラーが発生する（SQL0440N, SQLSTATE=42884）
+
+#### 理由  
+- CURRENT_SCHEMAが効くのはテーブルのみ
+- ファンクション・プロシージャのスキーマ名は「CURRENT PATH 特殊レジスター」の設定に従い暗黙的に解決される
+
+#### 解決方法
+- 「CURRENT PATH 特殊レジスター」にユーザー定義のファンクションやプロシージャを作成したスキーマ名を指定する（複数指定時はカンマ区切りする）
+    - SQLで設定する場合
+    カレントスキーマを指定するのと同じ要領で以下の通りスキーマ名を指定する。
+    ```sql
+    SET PATH = [スキーマ名]
+    ```
+    - JDBCの接続URLに設定する場合  
+    currentFunctionPathというパラメタにスキーマ名を指定する。
+    ```
+    jdbc:db2://${hostName}:${portNo}/${dbName}:currentSchema=${schemaName};currentFunctionPath=${schemaName};
+    ```
+
+#### 参考情報
+
+- 「CURRENT PATH 特殊レジスター」には暗黙的に常にSYSIBM, SYSFUN, SYSPROC, SYSIBMADMが設定される。  
+```SET PATH = [スキーマ名]```に1つのスキーマしか指定しなかったとしてもこの4つのスキーマは暗黙的に参照される。  
+参考：https://www.ibm.com/docs/ja/db2-for-zos/12.0.0?topic=statements-set-path
