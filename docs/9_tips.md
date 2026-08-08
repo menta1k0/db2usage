@@ -22,14 +22,14 @@
     ```sql
     SELECT CARD, STATS_TIME FROM SYSCAT.TABLES WHERE TABSCHEMA = [スキーマ名] AND TABNAME = [テーブル名]
     ```
-    > [!NOTE]
-    > 項目の概要
-    > |項目名|説明|
-    > |:--|:--|
-    > |TABSCHEMA|スキーマ名|
-    > |TABNAME|テーブル名|
-    > |CARD|表内の行の総数。統計が収集されていない場合は -1。サンプル率を指定してRANSTATSした場合は推定行数。|
-    > |STATS_TIME|統計情報更新日時|
+> [!NOTE]
+> 項目の概要
+> |項目名|説明|
+> |:--|:--|
+> |TABSCHEMA|スキーマ名|
+> |TABNAME|テーブル名|
+> |CARD|表内の行の総数。統計が収集されていない場合は -1。サンプル率を指定してRANSTATSした場合は推定行数。|
+> |STATS_TIME|統計情報更新日時|
 
 ## 9-2.インデックス定義
 
