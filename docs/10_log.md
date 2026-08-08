@@ -89,9 +89,9 @@ db2 get db cfg for [データベース名] | grep LOG
     FROM TABLE(SYSPROC.MON_GET_TRANSACTION_LOG(-2)) AS T
     ORDER BY MEMBER;
     ```
-    > [!NOTE]
-    > SQLファイルに保存しておきCLP(db2コマンド)で実行するように準備しておくことを推奨。  
-    > db2pdの手順と異なり特別な権限は不要。  
+    
+    SQLファイルに保存しておきCLP(db2コマンド)で実行するように準備しておくことを推奨。  
+    db2pdの手順と異なり特別な権限は不要。  
 
 
 ## 10-3.ログに関する設定の変更
@@ -107,10 +107,10 @@ db2 get db cfg for [データベース名] | grep LOG
     db2 update db cfg for [データベース名] using NEWLOGPATH [アクティブログ出力ディレクトリ]
     db2 update db cfg for [データベース名] using LOGARCHMETH1 DISK:[アーカイブログ出力ディレクトリ]
     ```
-    > [!NOTE]
-    > ログ出力ディレクトリのパス設計例。ログだからと言って/var/log配下にするのは駄目だと思う。
-    > * アクティブログ : /data/db2/actlog
-    > * アーカイブログ : /data/db2/arclog
+
+    ログ出力ディレクトリのパス設計例。ログだからと言って/var/log配下にするのはよくない。
+    * アクティブログ : /data/db2/actlog
+    * アーカイブログ : /data/db2/arclog
 3. 再起動
     ```bash
     db2stop
@@ -120,8 +120,8 @@ db2 get db cfg for [データベース名] | grep LOG
     ```bash
     db2 backup db [データベース名] to [バックアップ先パス]
     ```
-    > [!NOTE]
-    > バックアップの進行状況は`db2 list utilities show detail`で確認可能。
+    
+    バックアップの進行状況は`db2 list utilities show detail`で確認可能。
 
 ### （２）2次ログファイル数の変更
 
